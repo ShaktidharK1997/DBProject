@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -61,12 +62,14 @@ MIDDLEWARE = [
 ]
 
 # CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:3000",  # Assuming your React app runs on port 3000
-# ]
+#     "http://localhost:3000",  # React apps runs on :3000
 
 CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'SHEMS.urls'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 TEMPLATES = [
     {

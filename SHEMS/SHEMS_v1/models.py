@@ -2,24 +2,18 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
-class CustomerProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # Add your additional fields here
-    phone_number = models.CharField(max_length=15, blank=True)
-    # other fields...
-
-    def __str__(self):
-        return self.user.username
-
 
 class Customer(models.Model):
-    userid = models.CharField(max_length=20, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null = True)
+    userid = models.AutoField(primary_key=True)
     firstname = models.CharField(max_length=25)
     lastname = models.CharField(max_length=25, blank=True, null=True)
     baline1 = models.CharField(max_length=45)
     baline2 = models.CharField(max_length=45)
     phonenumber = models.CharField(max_length=10)
     email = models.EmailField(max_length=45, blank=True, null=True)
+    profile_photo = models.ImageField(upload_to='profile_photos/', blank=True, null=True)
+
     
 class ServiceLocation(models.Model):
     servicelocationid = models.CharField(max_length=20, primary_key=True)

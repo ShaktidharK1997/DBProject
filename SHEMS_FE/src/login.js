@@ -12,7 +12,7 @@ function Login() {
         setLoginError('');  // Reset login error
 
         try {
-            const response = await fetch('http://localhost:8000/api/login/', {
+            const response = await fetch('http://localhost:8000/SHEMS_v1/login/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

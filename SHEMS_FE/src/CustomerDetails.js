@@ -1,51 +1,112 @@
-// src/CustomerDetails.js
-import React, { useState, useEffect } from 'react';
-import './CustomerDetails.css'; // Import the CSS file
+import React, { useState } from 'react';
 
 function CustomerDetails() {
-    const [customer, setCustomer] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [formData, setFormData] = useState({
+        // initialize state for each form field
+        firstname: '',
+        lastname: '',
+        baline1: '',
+        baline2: '',
+        phonenumber: '',
+        email: ''
+    });
+    const [profilePhoto, setProfilePhoto] = useState(null);
 
-    useEffect(() => {
-        fetch('http://localhost:8000/api/customers/1/')  // Replace with your API URL and the desired customer ID
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                setCustomer(data);
-                setIsLoading(false);
-            })
-            .catch(error => {
-                setError(error.message);
-                setIsLoading(false);
+    const handlePhotoChange = (event) => {
+        setProfilePhoto(event.target.files[0]);
+    };
+    const [message, setMessage] = useState(''); 
+
+    const handleInputChange = (event) => {
+        setFormData({
+            ...formData,
+            [event.target.name]: event.target.value
+        });
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        const data = new FormData();
+        for (const key in formData) {
+            data.append(key, formData[key]);
+        }
+        if (profilePhoto) {
+            data.append('profilePhoto', profilePhoto);
+        }
+
+        try {
+            const response = await fetch('http://localhost:8000/SHEMS_v1/customers/', {
+                method: 'POST',
+                body: data
             });
-    }, []);
 
-    if (isLoading) {
-        return <div className="loading">Loading...</div>;
-    }
-
-    if (error) {
-        return <div className="error-message">Error: {error}</div>;
-    }
+            if (response.ok) {
+                // Handle success
+                setMessage('Your data has been saved successfully!')
+            } else {
+                // Handle failure
+                setMessage('Ohno! Something went wrong :(')
+            }
+        } catch (error) {
+            // Handle error
+            setMessage('Error: ' + error.message);
+        }
+    };
 
     return (
-        <div className="customer-details">
-            {customer ? (
-                <div>
-                    <h2>Customer Details</h2>
-                    <p><strong>ID:</strong> {customer.userid}</p>
-                    <p><strong>Name:</strong> {customer.firstname} {customer.lastname}</p>
-                    <p><strong>Email:</strong> {customer.email}</p>
-                    {/* Add more fields as needed */}
-                </div>
-            ) : (
-                <div>No customer data</div>
-            )}
+        <div>
+            <h2>Enter Customer Details</h2>
+            <form onSubmit={handleSubmit}>
+                <input 
+                    type="text"
+                    name="firstname"
+                    value={formData.firstname}
+                    onChange={handleInputChange}
+                    placeholder="First Name"
+                />
+                <input 
+                    type="text"
+                    name="lastname"
+                    value={formData.lastname}
+                    onChange={handleInputChange}
+                    placeholder="Last Name"
+                />
+                <input 
+                    type="text"
+                    name="baline1"
+                    value={formData.baline1}
+                    onChange={handleInputChange}
+                    placeholder="Billing Address Line 1"
+                />
+                <input 
+                    type="text"
+                    name="baline2"
+                    value={formData.baline2}
+                    onChange={handleInputChange}
+                    placeholder="Billing Address Line 2"
+                />
+                <input 
+                    type="text"
+                    name="phonenumber"
+                    value={formData.phonenumber}
+                    onChange={handleInputChange}
+                    placeholder="Phone Number"
+                />
+                <input 
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="Email"
+                />
+                <input 
+                    type="file"
+                    onChange={handlePhotoChange}
+                />
+                <button type="submit">Submit</button>
+            </form>
+            {message && <p>{message}</p>}
         </div>
     );
 }
