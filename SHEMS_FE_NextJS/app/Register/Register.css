@@ -1,0 +1,56 @@
+.register-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.register-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #f3f3f3; /* Light gray background for the header */
+}
+
+.logo {
+    height: 50px; /* Logo height */
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10 px; /* Space to accommodate the header above */
+}
+
+.register-form input, .register-form button {
+    width: 200px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px; /* Space between form elements */
+    color: black;
+}
+
+.register-form button {
+    background-color: #007bff; /* Blue background for the button */
+    color: white;
+    cursor: pointer;
+}
+
+.register-form button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.api-response {
+    margin-top: 20px; /* Space below the form for API response */
+    text-align: center;
+}
