@@ -1,18 +1,23 @@
 'use client'
 // src/Login.js
 import React, { useState } from 'react';
-import './Login.css';
+import './login.css';
+import { useRouter } from 'next/navigation'
 import Link from 'next/link';
 
 function Login() {
+    const router = useRouter()
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loginError, setLoginError] = useState('');
 
+    
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoginError('');  // Reset login error
-
+        
+    
         try {
             const response = await fetch('http://localhost:8000/SHEMS_v1/login/', {
                 method: 'POST',
@@ -21,18 +26,24 @@ function Login() {
                 },
                 body: JSON.stringify({ username, password }),
             });
-
+    
             const data = await response.json();
-
+    
             if (response.ok) {
                 // Handle successful login here
                 console.log('Login successful:', data);
                 setLoginError('Login successful!');
-                return <Link href="/dashboard">Go to Dashboard</Link>;
-                // You might want to save the token (if provided) and redirect the user
+    
+                // Save the token to local storage or session storage
+                localStorage.setItem('token', data.token); 
+    
+                // Redirect to dashboard
+                router.push(`/dashboard?userid=${data.userid}`);
+                // return <Link href="/dashboard/${data.customer.id}">Dashboard</Link>
             } else {
                 // Handle login errors (e.g., incorrect credentials)
-                setLoginError(data.message || 'Login failed');
+                console.error('Login failed:', data); // Log the error data for debugging
+                setLoginError('Login failed. Please check your credentials.');
             }
         } catch (error) {
             // Handle network errors

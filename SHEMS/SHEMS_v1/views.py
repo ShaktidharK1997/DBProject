@@ -29,14 +29,38 @@ from django.contrib.auth.hashers import make_password
 class CustomerViewSet(viewsets.ModelViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `userid` query parameter in the URL.
+        """
+        queryset = Customer.objects.all()
+        user = self.request.query_params.get('user')
+        if user is not None:
+            queryset = queryset.filter(user=user)
+        return queryset
 
 class ServiceLocationViewSet(viewsets.ModelViewSet):
     queryset = ServiceLocation.objects.all()
     serializer_class = ServiceLocationSerializer
+    
+    def get_queryset(self):
+        queryset = CustomerServiceLocation.objects.all()
+        userid = self.request.query_params.get('userid')
+        if userid is not None:
+            customer_service_locations = CustomerServiceLocation.objects.filter(userid__userid=userid)
+            service_location_ids = customer_service_locations.values_list('servicelocationid', flat=True)
+            queryset = ServiceLocation.objects.filter(servicelocationid__in=service_location_ids)
+            return queryset
+        else:
+            # If no userid is provided, return an empty queryset or handle as needed
+            return ServiceLocation.objects.none()
 
 class CustomerServiceLocationViewSet(viewsets.ModelViewSet):
     queryset = CustomerServiceLocation.objects.all()
     serializer_class = CustomerServiceLocationSerializer
+   
+    
 
 class DeviceManagerViewSet(viewsets.ModelViewSet):
     queryset = DeviceManager.objects.all()
@@ -59,10 +83,9 @@ class LoginView(APIView):
         username = request.data.get("username")
         password = request.data.get("password")
         user = authenticate(username=username, password=password)
-
         if user:
             token, created = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key}, status=status.HTTP_200_OK)
+            return Response({"token": token.key, "userid" : user.id}, status=status.HTTP_200_OK)
         return Response({"detail": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
 from rest_framework import status
