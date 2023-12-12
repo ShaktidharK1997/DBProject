@@ -1,68 +1,111 @@
-/* src/Login.css */
+/* Define CSS variables for colors, fonts, and common values */
+:root {
+    --primary-bg-color: #f5f5f5;
+    --secondary-bg-color: #ffffff;
+    --text-color: #333;
+    --accent-color: #007bff;
+    --hover-accent-color: #213a86;
+    --error-color: #ff0000;
+    --font-family: 'Arial', sans-serif;
+    --border-radius: 5px;
+    --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    --transition-speed: 0.3s;
+}
 
+/* Base container styling */
 .login-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 80vh;
-    width: 210vh;
-    background-color: #f5f5f5;
+    width: 100vw; /* Adjusted to 100% of the viewport width */
+    background-color: var(--primary-bg-color);
 }
 
+/* Login form styling */
 .login-form {
     width: 300px;
     padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    background-color: #ffffff;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    background-color: var(--secondary-bg-color);
+    font-family: var(--font-family);
 }
 
 .login-form h2 {
     text-align: center;
     margin-bottom: 20px;
-    font-size: 18px; /* Reduced font size for heading */
+    font-size: 1.2em; /* Use em for scalable font sizing */
+    color: var(--text-color);
 }
 
+/* Form groups */
 .form-group {
     margin-bottom: 15px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px; /* Adjusted margin for labels */
-    font-size: 14px; /* Reduced font size for labels */
+    margin-bottom: 5px;
+    font-size: 0.85em;
+    color: var(--text-color);
 }
 
 .form-group input {
-    width: 80%;
-    padding: 8px; /* Slightly reduced padding for inputs */
+    width: 80%; /* Adjusted to fill form width */
+    padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 2px;
-    font-size: 14px; /* Reduced font size for inputs */
+    border-radius: var(--border-radius);
+    font-size: 0.85em;
+    transition: border-color var(--transition-speed);
 }
 
+.form-group input:focus {
+    border-color: var(--accent-color); /* Change border color on focus */
+}
+
+/* Login button styling */
 .login-button {
     width: 100%;
-    padding: 10px; /* Slightly reduced padding for button */
+    padding: 10px;
     border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: black;
+    border-radius: var(--border-radius);
+    background-color: var(--accent-color);
+    color: white; /* Adjusted for better contrast */
     cursor: pointer;
-    font-size: 15px; /* Reduced font size for button */
+    font-size: 0.9em;
+    transition: background-color var(--transition-speed);
 }
 
 .login-button:hover {
-    background-color: #213a86;
+    background-color: var(--hover-accent-color);
 }
 
+/* Error message styling */
 .login-error {
-    color: red;
-    margin-bottom: 15px; /* Increased margin for error message */
+    color: var(--error-color);
+    margin-bottom: 15px;
     text-align: center;
-    font-size: 14px; /* Reduced font size for error message */
+    font-size: 0.85em;
 }
 
-.register-link{
-    font-size: 14px;
+/* Registration link styling */
+.register-link {
+    font-size: 0.85em;
+    text-align: center;
+    display: block; /* Makes it a block for better alignment */
+    margin-top: 10px;
+    color: var(--accent-color);
+    transition: color var(--transition-speed);
+}
+
+.register-link:hover {
+    color: var(--hover-accent-color);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 600px) {
+    .login-form {
+        width: 90%; /* Adjust width for smaller screens */
+    }
 }

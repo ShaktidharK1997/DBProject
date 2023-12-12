@@ -72,8 +72,6 @@ function Register() {
                     placeholder="Password"
                 />
     
-                {/* Add other fields based on your Customer model */}
-                {/* Example: First Name */}
                 <label htmlFor="firstname">First Name</label>
                 <input 
                     id="firstname"
@@ -98,7 +96,7 @@ function Register() {
                     type="text"
                     value={baline1}
                     onChange={(e) => setBaline1(e.target.value)}
-                    placeholder="Baline1"
+                    placeholder="Line 1"
                 />
 
                 <label htmlFor="baline2">Business Address Line 2</label>
@@ -107,7 +105,7 @@ function Register() {
                     type="text"
                     value={baline2}
                     onChange={(e) => setBaline2(e.target.value)}
-                    placeholder="Baline2"
+                    placeholder="Line 2"
                 />
 
                 <label htmlFor="phonenumber">Phone number</label>
@@ -116,7 +114,7 @@ function Register() {
                     type="text"
                     value={phonenumber}
                     onChange={(e) => setPhonenumber(e.target.value)}
-                    placeholder="phonenumber"
+                    placeholder="Phone number"
                 />
     
                 <label htmlFor="profilePhoto">Profile Photo</label>

@@ -1,37 +1,93 @@
+/* Define CSS variables for better maintainability and consistency */
+:root {
+  --primary-bg-color: #f4f4f4;
+  --secondary-bg-color: #f8f8f8;
+  --text-color: #424242;
+  --heading-color: #2b2b2b;
+  --accent-color: #0056b3; /* A color for interactive elements */
+  --font-family-primary: 'Open Sans', sans-serif;
+  --font-family-heading: 'Merriweather', serif;
+  --border-radius: 8px;
+  --box-shadow-light: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --box-shadow-heavy: 0 8px 16px rgba(0, 0, 0, 0.15);
+  --transition-speed: 0.3s;
+}
+
+/* Base styles */
+body {
+  font-family: var(--font-family-primary);
+  line-height: 1.6;
+  color: var(--text-color);
+}
+
+a {
+  color: var(--accent-color);
+  text-decoration: none;
+  transition: color var(--transition-speed);
+}
+
+a:hover, a:focus {
+  color: darken(var(--accent-color), 10%);
+}
+
+/* Dashboard container */
 .dashboard-container {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 30px;
-    background-color: #f4f4f4;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: var(--primary-bg-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-heavy);
+  overflow: hidden; /* Ensures no child element leaks out */
+}
+
+.dashboard-container h2 {
+  color: var(--heading-color);
+  font-family: var(--font-family-heading);
+  font-size: 2em;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Dashboard info sections */
+.dashboard-info {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  flex-basis: 48%;
+  background-color: var(--secondary-bg-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-light);
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.dashboard-info:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--box-shadow-heavy);
+}
+
+/* Responsive design for smaller screens */
+@media screen and (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
   }
-  
-  .dashboard-container h2 {
-    color: #2b2b2b;
-    font-family: 'Merriweather', serif;
-    font-size: 2em;
-    text-align: center;
+
+  .dashboard-info {
+    flex-basis: auto; /* Allows sections to take the full width on small screens */
     margin-bottom: 30px;
   }
-  
-  .dashboard-info {
-    background-color: #f8f8f8;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-  
-  .dashboard-info p {
-    color: #424242;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
-    margin-bottom: 15px;
-  }
-  
-  .dashboard-info p:last-child {
-    margin-bottom: 0;
-  }
-  
+}
+
+/* Typography and spacing for content */
+.dashboard-info p {
+  margin-bottom: 15px;
+}
+
+.dashboard-info p:last-child {
+  margin-bottom: 0;
+}
+
+/* Optional: Add styles for buttons, form elements, etc., as needed */

@@ -1,16 +1,56 @@
+/* Define CSS variables for consistent theming */
+:root {
+  --header-bg-color: #2562be;
+  --header-text-color: #fff;
+  --header-font-family: 'Arial', sans-serif;
+  --header-logo-width: 50px;
+  --header-padding: 10px;
+  --header-title-font-size: 24px;
+  --transition-speed: 0.2s;
+}
+
+/* Header styling */
 header {
-    display: flex;
-    align-items: center;
-    background-color: #49529a; /* Example background color */
-    padding: 10px;
+  display: flex;
+  align-items: center;
+  background-color: var(--header-bg-color);
+  padding: var(--header-padding);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  color: var(--header-text-color);
+}
+
+/* Logo styling */
+header img {
+  width: var(--header-logo-width);
+  margin-right: 20px;
+  transition: transform var(--transition-speed);
+}
+
+header img:hover {
+  transform: scale(1.1); /* Slight scale on hover for interactivity */
+}
+
+/* Header title styling */
+header h1 {
+  font-size: var(--header-title-font-size);
+  font-family: var(--header-font-family);
+  margin: 0; /* Removes default margins */
+  line-height: 1.2;
+}
+
+/* Additional styles for navigational links or buttons can be added here */
+
+/* Responsive design adjustments */
+@media screen and (max-width: 768px) {
+  header {
+      padding: var(--header-padding) 5px; /* Smaller padding on smaller screens */
   }
-  
-  header img {
-    width: 50px; /* Adjust as needed */
-    margin-right: 20px;
-  }
-  
+
   header h1 {
-    font-size: 24px;
+      font-size: 20px; /* Slightly smaller font size for mobile devices */
   }
-  
+
+  header img {
+      width: 40px; /* Smaller logo for mobile devices */
+  }
+}

@@ -1,11 +1,27 @@
+/* Define CSS variables for colors, fonts, and common values */
+:root {
+    --primary-bg-color: #f3f3f3;
+    --secondary-bg-color: #ffffff;
+    --accent-color: #007bff;
+    --hover-accent-color: #0056b3;
+    --text-color: #333;
+    --font-family: 'Arial', sans-serif;
+    --border-radius: 5px;
+    --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --transition-speed: 0.3s;
+}
+
+/* Container for the registration area */
 .register-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 130vh;
+    background-color: var(--primary-bg-color);
 }
 
+/* Header styling */
 .register-header {
     display: flex;
     align-items: center;
@@ -16,41 +32,62 @@
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
-    background-color: #f3f3f3; /* Light gray background for the header */
+    background-color: var(--secondary-bg-color);
+    box-shadow: var(--box-shadow);
 }
 
+/* Logo styling */
 .logo {
-    height: 50px; /* Logo height */
+    height: 50px;
 }
 
+/* Form styling */
 .register-form {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    margin-top: 10 px; /* Space to accommodate the header above */
+    margin-top: 60px; /* Adjusted to give more space for the header */
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    background-color: var(--secondary-bg-color);
 }
 
+/* Input and button styling */
 .register-form input, .register-form button {
-    width: 200px;
+    width: 250px; /* Adjusted width for better alignment */
     padding: 10px;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     border: 1px solid #ddd;
-    margin-bottom: 10px; /* Space between form elements */
-    color: black;
+    margin-bottom: 10px;
+    color: var(--text-color);
+    font-family: var(--font-family);
 }
 
+/* Button specific styling */
 .register-form button {
-    background-color: #007bff; /* Blue background for the button */
+    background-color: var(--accent-color);
     color: white;
     cursor: pointer;
+    transition: background-color var(--transition-speed);
 }
 
 .register-form button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: var(--hover-accent-color);
 }
 
+/* API response styling */
 .api-response {
-    margin-top: 20px; /* Space below the form for API response */
+    margin-top: 20px;
     text-align: center;
+    font-size: 0.9em;
+    color: var(--text-color);
+}
+
+/* Responsive design for smaller screens */
+@media screen and (max-width: 600px) {
+    .register-form input, .register-form button {
+        width: 80%; /* Adjust width for smaller screens */
+    }
 }

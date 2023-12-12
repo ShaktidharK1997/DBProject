@@ -59,6 +59,8 @@ class ServiceLocationViewSet(viewsets.ModelViewSet):
 class CustomerServiceLocationViewSet(viewsets.ModelViewSet):
     queryset = CustomerServiceLocation.objects.all()
     serializer_class = CustomerServiceLocationSerializer
+
+    
    
     
 
@@ -103,7 +105,7 @@ class RegisterView(APIView):
         baline1 = request.data.get("baline1")
         baline2 = request.data.get("baline2")
         phonenumber = request.data.get("phonenumber")
-        profile_photo = request.data.get("profile_photo")
+        profile_photo = request.FILES.get("profile_photo")
     
         if not username or not password:
             return Response({'error': 'Both username and password are required'},
@@ -129,7 +131,6 @@ class RegisterView(APIView):
             profile_photo=profile_photo
         )
         
-        customer.save()
         
         refresh = RefreshToken.for_user(user)
         return Response({

@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import './dashboard.css';
 import { useSearchParams } from 'next/navigation';
-import Link from 'next/link'
+import Link from 'next/link';
+import Image from 'next/image';
 
 const Dashboard = () => {
   const [customerData, setCustomerData] = useState(null);
@@ -20,7 +21,7 @@ const Dashboard = () => {
           const data = await response.json();
           setCustomerData(data[0]);
 
-          const response2 = await fetch(`http://localhost:8000/SHEMS_v1/customerservicelocations/?userid=${data[0].userid}`);
+          const response2 = await fetch(`http://localhost:8000/SHEMS_v1/servicelocations/?userid=${data[0].userid}`);
           if (!response2.ok) console.error('API failed');
           const data2 = await response2.json();
           setslData(data2);
@@ -40,17 +41,18 @@ const Dashboard = () => {
   }
 
   return (
-    <div>
-      <div>
+    <div className = 'dashboard-container'>
+      <div className = 'dashboard-info'>
         <h2>My Profile</h2>
+        <img src='http://localhost:8000/media/profile_photos/vegetable_5uvUXEb.jpg'/>
         <p>First Name: {customerData.firstname}</p>
         <p>Last Name: {customerData.lastname}</p>
         <p>Business Address Line 1: {customerData.baline1}</p>
         <p>Business Address Line 2: {customerData.baline2}</p>
         <p>Phone Number: {customerData.phonenumber}</p>
-        <p>Email: {customerData.email}</p>
+        <p>Alternate Email: {customerData.email}</p>
       </div>
-      <div>
+      <div className = 'dashboard-info'>
       <h2>Service Locations</h2>
       {slData && slData.map((item, index) => (
         <div key={index}>
@@ -60,7 +62,7 @@ const Dashboard = () => {
             {item.servicelocationid}
           </Link>
           </p>
-          <p>Active: {item.active ? 'No' : 'Yes'}</p>
+          <p>Active: {item.active ? 'Yes' : 'No'}</p>
         </div>
       ))}
     </div>
