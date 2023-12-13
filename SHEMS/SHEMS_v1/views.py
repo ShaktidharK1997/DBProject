@@ -36,8 +36,11 @@ class CustomerViewSet(viewsets.ModelViewSet):
         """
         queryset = Customer.objects.all()
         user = self.request.query_params.get('user')
+        userid = self.request.query_params.get('userid')
         if user is not None:
             queryset = queryset.filter(user=user)
+        if userid is not None:
+            queryset = queryset.filter(userid=userid)
         return queryset
 
 class ServiceLocationViewSet(viewsets.ModelViewSet):

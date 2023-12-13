@@ -1,0 +1,71 @@
+/* Profile.css */
+
+/* Base styles for the profile container */
+.edit-profile-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Title styling */
+.edit-profile-container h1 {
+    color: #333;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Form styling */
+.edit-profile-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Input field styling */
+.edit-profile-container input[type="text"],
+.edit-profile-container input[type="email"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+/* Focus effect on input fields */
+.edit-profile-container input[type="text"]:focus,
+.edit-profile-container input[type="email"]:focus {
+    outline: none;
+    border-color: #4272b3;
+    box-shadow: 0 0 5px rgba(66, 114, 179, 0.5);
+}
+
+/* Button styling */
+.edit-profile-container button {
+    padding: 10px 15px;
+    background-color: #4272b3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+/* Button hover effect */
+.edit-profile-container button:hover {
+    background-color: #365f91;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .edit-profile-container {
+        padding: 15px;
+    }
+
+    .edit-profile-container h1 {
+        font-size: 1.5rem;
+    }
+}

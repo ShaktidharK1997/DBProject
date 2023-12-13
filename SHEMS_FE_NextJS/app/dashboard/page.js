@@ -2,14 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import './dashboard.css';
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation'
 import Link from 'next/link';
-import Image from 'next/image';
 
 const Dashboard = () => {
   const [customerData, setCustomerData] = useState(null);
   const [slData, setslData] = useState(null);
   const searchParams = useSearchParams();
   const search = searchParams.get('userid');
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,11 +41,18 @@ const Dashboard = () => {
     return <div>Loading...</div>;
   }
 
+  const handleEditProfile = () => {
+    router.push(`/dashboard/Profile?userid=${search}`); // Navigate to the Profile page
+  };
+
   return (
     <div className = 'dashboard-container'>
       <div className = 'dashboard-info'>
         <h2>My Profile</h2>
-        <img src='http://localhost:8000/media/profile_photos/vegetable_5uvUXEb.jpg'/>
+        <img src={customerData.profile_photo}/>
+        <p className="edit-profile">
+          Edit Profile? <button onClick={handleEditProfile}>Click here</button>
+        </p>
         <p>First Name: {customerData.firstname}</p>
         <p>Last Name: {customerData.lastname}</p>
         <p>Business Address Line 1: {customerData.baline1}</p>

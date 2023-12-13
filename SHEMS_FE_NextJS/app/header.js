@@ -1,11 +1,16 @@
 import React from 'react';
-import './header.css';
-import logo from './logo.svg'; // Replace with the path to your logo image
+import './header.css'; // Replace with the path to your logo image
+import logo from './logo.jpg';
+import Image from 'next/image'
 
 const Header = () => {
   return (
     <header>
-      <img src='C:\Users\shakt\NextJS Trial\your-app-name\logo.png'/>
+      <Image
+      src={logo}
+      width={50}
+      height={50}
+    />
       <h1>Power Track</h1>
     </header>
   );
