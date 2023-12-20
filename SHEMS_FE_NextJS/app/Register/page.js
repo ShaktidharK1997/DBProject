@@ -54,70 +54,72 @@ function Register() {
     return (
         <div className="register-container">
             <form onSubmit={handleSubmit} className="register-form">
-                <label htmlFor="username">Username</label>
                 <input 
                     id="username"
                     type="text"
+                    className="register-control"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="Username"
                 />
     
-                <label htmlFor="password">Password</label>
                 <input 
                     id="password"
                     type="password"
+                    className="register-control"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password"
                 />
     
-                <label htmlFor="firstname">First Name</label>
                 <input 
                     id="firstname"
                     type="text"
+                    className="register-control"
                     value={firstname}
                     onChange={(e) => setFirstname(e.target.value)}
                     placeholder="First Name"
                 />
 
-                <label htmlFor="lastname">Last Name</label>
                 <input 
                     id="lastname"
                     type="text"
+                    className="register-control"
                     value={lastname}
                     onChange={(e) => setLastname(e.target.value)}
                     placeholder="Last Name"
                 />
-                
-                <label htmlFor="baline1">Business Address Line 1</label>
+
                 <input 
                     id="baline1"
                     type="text"
+                    className="register-control"
                     value={baline1}
                     onChange={(e) => setBaline1(e.target.value)}
                     placeholder="Line 1"
                 />
 
-                <label htmlFor="baline2">Business Address Line 2</label>
+                {/*<label htmlFor="baline2">Business Address Line 2</label>*/}
                 <input 
                     id="baline2"
                     type="text"
+                    className="register-control"
                     value={baline2}
                     onChange={(e) => setBaline2(e.target.value)}
                     placeholder="Line 2"
                 />
 
-                <label htmlFor="phonenumber">Phone number</label>
+                {/*<label htmlFor="phonenumber">Phone number</label>*/}
                 <input 
                     id="phonenumber"
                     type="text"
+                    className="register-control"
                     value={phonenumber}
                     onChange={(e) => setPhonenumber(e.target.value)}
                     placeholder="Phone number"
                 />
     
-                <label htmlFor="profilePhoto">Profile Photo</label>
+                {/*<label htmlFor="profilePhoto">Profile Photo</label>*/}
                 <input 
                     id="profilePhoto"
                     type="file"

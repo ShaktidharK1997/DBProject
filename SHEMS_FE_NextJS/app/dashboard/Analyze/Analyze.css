@@ -1,0 +1,16 @@
+/* Analyze.module.css or Analyze.css */
+
+
+
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+    .graphs-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .graph-container {
+        max-width: 100%;
+    }
+}

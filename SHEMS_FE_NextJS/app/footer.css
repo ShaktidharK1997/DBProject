@@ -1,0 +1,18 @@
+/* footer.css */
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    background-color: #2562be; /* Match the header color or choose another */
+    color: white;
+    font-size: 0.9em;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  }
+  
+  footer p {
+    margin: 0;
+    text-align: center;
+  }
+  

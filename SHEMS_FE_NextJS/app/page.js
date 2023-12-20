@@ -55,40 +55,40 @@ function Login() {
     return (
       <div className="login-container">
           <form className="login-form" onSubmit={handleSubmit}>
-              <h2>Welcome to PowerTrack</h2>
+              <h2>Sign In</h2>
               {loginError && <p className="login-error">{loginError}</p>}
               
               <div className="form-group">
-                  <label htmlFor="username">Username</label>
+                  
                   <input
                       type="text"
                       id="username"
                       className="form-control"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
-                      placeholder="Enter your username"
+                      placeholder="Username"
                       required
                   />
               </div>
   
               <div className="form-group">
-                  <label htmlFor="password">Password</label>
+                  
                   <input
                       type="password"
                       id="password"
                       className="form-control"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter your password"
+                      placeholder="Password"
                       required
                   />
               </div>
   
               <button type="submit" className="submit-button">
-                  Login
+                  Next
               </button>
-              <p className="register-link">
-                    New here? <Link href="/Register">Sign up</Link>
+              <p className="register-prompt">
+                    New here? <Link href="/Register" className="register-link">Join now</Link>
               </p>
           </form>
       </div>

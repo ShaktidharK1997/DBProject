@@ -47,7 +47,6 @@ a:hover, a:focus {
 button {
   padding: 8px 16px;
   border: none;
-  margin-left: 10px;
   border-radius: var(--border-radius);
   background-color: var(--button-bg-color);
   color: #fff;
@@ -62,6 +61,16 @@ button:hover {
 }
 
 /* Additional global styles can be added below as needed */
+.site-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-wrap {
+  flex: 1;
+  /* Additional styling for the main content area */
+}
 
 /* Responsive design adjustments */
 @media screen and (max-width: 768px) {

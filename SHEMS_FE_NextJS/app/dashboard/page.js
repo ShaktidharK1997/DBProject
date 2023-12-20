@@ -11,6 +11,8 @@ const Dashboard = () => {
   const searchParams = useSearchParams();
   const search = searchParams.get('userid');
   const router = useRouter();
+  const [showCreateLocationPopup, setShowCreateLocationPopup] = useState(false);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,6 +43,10 @@ const Dashboard = () => {
     return <div>Loading...</div>;
   }
 
+  const handleAnalyzeData = (userid) => {
+    router.push(`/dashboard/Analyze?userid=${userid}`);
+  };
+
   const handleEditProfile = () => {
     router.push(`/dashboard/Profile?userid=${search}`); // Navigate to the Profile page
   };
@@ -52,19 +58,22 @@ const Dashboard = () => {
     <div className = 'dashboard-container'>
       <div className = 'dashboard-info'>
         <h2>My Profile</h2>
-        <img src={customerData.profile_photo}/>
+        <button className="analyze-button" onClick={() => handleAnalyzeData(customerData.userid)} style={{ alignSelf: 'flex-start' }}>Analyze your data</button>
+        <img src={customerData.profile_photo}style={{ width: '200px', height: '200px', objectFit: 'cover' }}/>
         <p className="edit-profile">
           <button onClick={handleEditProfile}>Update Profile</button>
         </p>
         <p>First Name: {customerData.firstname}</p>
         <p>Last Name: {customerData.lastname}</p>
-        <p>Business Address Line 1: {customerData.baline1}</p>
-        <p>Business Address Line 2: {customerData.baline2}</p>
+        <p>Business Address: {customerData.baline1} , {customerData.baline2}</p>
         <p>Phone Number: {customerData.phonenumber}</p>
         {/* <p>Alternate Email: {customerData.email}</p> */}
       </div>
       <div className = 'dashboard-info'>
       <h2>My Service Locations</h2>
+      <button className="createsl-button" onClick={() => setShowCreateLocationPopup(true)} style={{ marginLeft: 'auto' }}>
+      Add Service Location
+      </button>
       {slData && slData.map((item, index) => (
         <div key={index}>
           <p>

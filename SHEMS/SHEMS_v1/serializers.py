@@ -37,3 +37,17 @@ class ServiceLocationDeviceMappingSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceLocationDeviceMapping
         fields = '__all__'
+    
+class ServiceLocationEnergyUsageSerializer(serializers.ModelSerializer):
+    energy_used = serializers.FloatField()
+
+    class Meta:
+        model = ServiceLocation
+        fields = ('servicelocationid', 'energy_used')
+
+class DeviceTypeEnergyUsageSerializer(serializers.ModelSerializer):
+    energy_used = serializers.FloatField()
+
+    class Meta:
+        model = DeviceManager
+        fields = ('type', 'energy_used')

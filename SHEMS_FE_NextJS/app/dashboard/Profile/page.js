@@ -3,10 +3,12 @@ import './profile.css';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import React, { useState, useEffect } from 'react';
 
 const Profile = () => {
+
     const [customerData, setCustomerData] = useState({
         firstname: '',
         lastname: '',
@@ -17,10 +19,11 @@ const Profile = () => {
         profile_photo: ''
     });
     const [isRegistered, setIsRegistered] = useState(false);
-    const [Message, setMessage] = useState(false);
+    const [originalData, setOriginalData] = useState({});
+    const [message, setMessage] = useState('');
     const searchParams = useSearchParams();
     const search = searchParams.get('userid');
-
+    const router = useRouter();
 
 
     useEffect(() => {
@@ -31,6 +34,7 @@ const Profile = () => {
             if (!response.ok) throw new Error('API request failed');
             const data = await response.json();
             setCustomerData(data[0]);
+            setOriginalData(data[0]); // Save original data for possible revert
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -51,35 +55,45 @@ const Profile = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Here, implement the logic to send the updated data to the server
-        try {
-            const formData = new FormData();
-            formData.append('firstname', customerData.firstname);
-            formData.append('lastname', customerData.lastname);
-            formData.append('baline1', customerData.baline1);
-            formData.append('baline2', customerData.baline2);
-            formData.append('phonenumber', customerData.phonenumber);
-            formData.append('email', customerData.email);
+    
+        // Prepare the form data
+        const formData = new FormData();
+        formData.append('firstname', customerData.firstname);
+        formData.append('lastname', customerData.lastname);
+        formData.append('baline1', customerData.baline1);
+        formData.append('baline2', customerData.baline2);
+        formData.append('phonenumber', customerData.phonenumber);
+        formData.append('email', customerData.email);
+
+        console.log("Sending data to server:", customerData);
+    
+        // Include the profile photo only if it has been changed
+        if (customerData.profile_photo instanceof File) {
             formData.append('profile_photo', customerData.profile_photo);
-            
-            console.log(customerData);
+        }
+    
+        try {
             const response = await fetch(`http://localhost:8000/SHEMS_v1/customers/${customerData.userid}/`, {
                 method: 'PUT',
                 body: formData,
             });
-            const data = await response.json();
-            if (response.ok){
+    
+            if (response.ok) {
                 setMessage('You have successfully updated your profile!');
                 setIsRegistered(true);
-            }
-            else{
-                setMessage('Update failed, please try again later :(');
+                localStorage.setItem('profileUpdated', 'true');
+                //router.push('/dashboard');  // Redirect to the dashboard
+            } else {
+                setMessage('Update failed, please try again later.');
             }
         } catch (error) {
-            setMessage('Error: ' + error.message);
+            setCustomerData(originalData);
+            setMessage(`Error: ${error.message}`);
         }
-        // Example POST request (update as needed)
-        // const response = await fetch(`API_URL`, {method: 'POST', body: JSON.stringify(customerData)});
+    };
+
+    const handleBackButtonClick = () => {
+        router.back(); // This will take the user to the previous page
     };
 
     return (
@@ -94,11 +108,12 @@ const Profile = () => {
             <input type="text" name="phonenumber" value={customerData.phonenumber} onChange={handleChange} placeholder="Phone Number" />
             <input type="text" name="email" value={customerData.email} onChange={handleChange} placeholder="Email" />
             
-            <button type="submit">Update Profile</button>
+            <button type="submit">Save Changes</button>
+            <button type="button" onClick={handleBackButtonClick}>Back</button>
         </form>
-        <div className="api-response">
+        {/*<div className="api-response">
                 {isRegistered && <Link href="/dashboard">Login</Link>}
-        </div>
+    </div>*/}
         </div>
         
     );

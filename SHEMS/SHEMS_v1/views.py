@@ -22,6 +22,17 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.hashers import make_password
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.contrib.auth.models import User
+from .models import Customer  # Import the Customer model
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .models import ServiceLocation, DataHistory, ServiceLocationDeviceMapping, DeviceManager
+from .serializers import ServiceLocationEnergyUsageSerializer
+from django.db.models import Sum
+from django.db import models
 
     
 
@@ -71,9 +82,6 @@ class CustomerServiceLocationViewSet(viewsets.ModelViewSet):
     queryset = CustomerServiceLocation.objects.all()
     serializer_class = CustomerServiceLocationSerializer
 
-    
-   
-    
 
 class DeviceManagerViewSet(viewsets.ModelViewSet):
     queryset = DeviceManager.objects.all()
@@ -96,6 +104,19 @@ class DeviceManagerViewSet(viewsets.ModelViewSet):
             # If no userid is provided, return an empty queryset or handle as needed
             return ServiceLocation.objects.none()
         
+# class graph1(viewsets.ModelViewSet):
+#     def query_set(self):
+#          service_locations = CustomerServiceLocation.objects.filter(
+#             userid=userid, 
+#             active=True
+#         ).values_list('servicelocationid', flat=True)
+        
+#         # Count the number of active devices at the user's service locations
+#          device_count = ServiceLocationDeviceMapping.objects.filter(servicelocationid__in=service_locations,active=True
+#         ).distinct().count()
+         
+    
+        
 
         
 
@@ -111,6 +132,8 @@ class ServiceLocationDeviceMappingViewSet(viewsets.ModelViewSet):
     queryset = ServiceLocationDeviceMapping.objects.all()
     serializer_class = ServiceLocationDeviceMappingSerializer
 
+
+
 class LoginView(APIView):
     def post(self, request, *args, **kwargs):
         username = request.data.get("username")
@@ -121,11 +144,95 @@ class LoginView(APIView):
             return Response({"token": token.key, "userid" : user.id}, status=status.HTTP_200_OK)
         return Response({"detail": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
-from rest_framework import status
-from rest_framework.response import Response
+
+
+class EnergyUsageView(APIView):
+    def get(self, request, *args, **kwargs):
+        # You may want to filter by date or other parameters, which you can get from request.query_params
+
+        # Aggregate energy usage per service location
+        userid = request.query_params.get('userid')
+        service_locations = CustomerServiceLocation.objects.filter(
+            userid=userid
+        ).values_list('servicelocationid', flat=True)
+
+        energy_per_location = ServiceLocationDeviceMapping.objects.filter(
+            servicelocationid__in=service_locations,
+            active=True
+        ).values('servicelocationid') \
+        .annotate(energy_used=Sum('deviceid__datahistory__event_value',
+                                  filter=models.Q(deviceid__datahistory__event_label='energy use'))) \
+        .order_by('servicelocationid')
+        
+        # Serialize the data
+        location_serializer = ServiceLocationEnergyUsageSerializer(energy_per_location, many=True)
+
+        # Calculate total energy usage across all service locations
+        total_energy = sum(item['energy_used'] for item in energy_per_location if item['energy_used'] is not None)
+        
+        return Response({
+            'energy_per_location': location_serializer.data,
+            'total_energy_usage': total_energy
+        })
+
 from rest_framework.views import APIView
-from django.contrib.auth.models import User
-from .models import Customer  # Import the Customer model
+from rest_framework.response import Response
+from django.db.models import Sum
+from .models import DeviceManager, DataHistory, CustomerServiceLocation, ServiceLocationDeviceMapping
+from .serializers import DeviceTypeEnergyUsageSerializer
+
+class DeviceTypeEnergyUsageView(APIView):
+    def get(self, request, *args, **kwargs):
+        userid = request.query_params.get('userid')
+
+        if not userid:
+            return Response({'error': 'User ID is required'}, status=400)
+
+        try:
+            userid = int(userid)
+        except ValueError:
+            return Response({'error': 'Invalid User ID'}, status=400)
+
+        # Get service locations for the user
+        service_locations = CustomerServiceLocation.objects.filter(
+            userid=userid
+        ).values_list('servicelocationid', flat=True)
+
+        # Get devices for these service locations
+        devices = ServiceLocationDeviceMapping.objects.filter(
+            servicelocationid__in=service_locations,
+            active=True
+        ).values_list('deviceid', flat=True)
+
+        # Aggregate energy usage per device type
+        energy_per_device_type = DataHistory.objects.filter(
+            deviceid__in=devices,
+            event_label='energy use'
+        ).values('deviceid__type') \
+        .annotate(energy_used=Sum('event_value')) \
+        .order_by('deviceid__type')
+
+        # Adjust the queryset to map 'deviceid__type' to 'type'
+        energy_per_device_type = [
+            {'type': entry['deviceid__type'], 'energy_used': entry['energy_used']}
+            for entry in energy_per_device_type
+        ]
+
+        # Serialize the data
+        type_serializer = DeviceTypeEnergyUsageSerializer(energy_per_device_type, many=True)
+
+
+        # Calculate total energy usage
+        total_energy = sum(item['energy_used'] for item in energy_per_device_type if item['energy_used'] is not None)
+        
+        return Response({
+            'energy_per_device_type': type_serializer.data,
+            'total_energy_usage': total_energy
+        })
+
+
+
+
 
 class RegisterView(APIView):
     def post(self, request, *args, **kwargs):
@@ -168,5 +275,8 @@ class RegisterView(APIView):
             'refresh': str(refresh),
             'access': str(refresh.access_token),
         })
+
+
+
 
 

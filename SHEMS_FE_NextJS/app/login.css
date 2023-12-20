@@ -1,84 +1,92 @@
 /* Define CSS variables for colors, fonts, and common values */
 :root {
-    --primary-bg-color: #f5f5f5;
+    --primary-bg-color: #f0f2f5;  /* Lighter shade for a fresh look */
     --secondary-bg-color: #ffffff;
-    --text-color: #333;
-    --accent-color: #007bff;
-    --hover-accent-color: #213a86;
-    --error-color: #ff0000;
-    --font-family: 'Arial', sans-serif;
-    --border-radius: 5px;
-    --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    --transition-speed: 0.3s;
+    --text-color: #333333;  /* Darker shade for better readability */
+    --accent-color: #0056b3;  /* Slightly darker blue for a modern feel */
+    --hover-accent-color: #004494;  /* Complementary to the accent color */
+    --error-color: #d32f2f;  /* Softer red for error messages */
+    --font-family: 'Helvetica Neue', Arial, sans-serif;  /* Updated font for a cleaner look */
+    --border-radius: 8px;  /* Increased for a more modern, rounded look */
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Enhanced shadow for depth */
+    --transition-speed: 0.25s;  /* Slightly faster transition */
 }
+
+/* login.css */
 
 /* Base container styling */
 .login-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80vh;
-    width: 100vw; /* Adjusted to 100% of the viewport width */
+    height: 100vh;
     background-color: var(--primary-bg-color);
+    height: calc(100vh - 20vh); /* Adjust height to account for header */
 }
 
 /* Login form styling */
 .login-form {
-    width: 300px;
-    padding: 20px;
+    width: 350px;
+    padding: 30px;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     background-color: var(--secondary-bg-color);
     font-family: var(--font-family);
 }
 
+/* Welcome message */
 .login-form h2 {
     text-align: center;
-    margin-bottom: 20px;
-    font-size: 1.2em; /* Use em for scalable font sizing */
-    color: var(--text-color);
+    color: var(--text-color); /* You can customize this color as needed */
+    font-size: 36px; /* Increased font size for better visibility */
+    font-weight: bold;
+    margin-bottom: 30px; /* Adjust the bottom margin if needed */
 }
 
-/* Form groups */
-.form-group {
-    margin-bottom: 15px;
-}
-
+/* Form group styling */
 .form-group label {
     display: block;
-    margin-bottom: 5px;
-    font-size: 0.85em;
+    margin-bottom: 8px;
     color: var(--text-color);
+    font-weight: 500;
 }
 
-.form-group input {
-    width: 80%; /* Adjusted to fill form width */
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: var(--border-radius);
-    font-size: 0.85em;
-    transition: border-color var(--transition-speed);
-}
-
-.form-group input:focus {
-    border-color: var(--accent-color); /* Change border color on focus */
-}
-
-/* Login button styling */
-.login-button {
+/* Input field styling */
+.form-control {
     width: 100%;
     padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc; /* Light grey border */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 1em;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); /* Inner shadow for depth */
+    transition: border-color var(--transition-speed);
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1), 0 0 0 2px var(--accent-color);
+}
+
+/* Submit button styling */
+.submit-button {
+    width: 100%;
+    padding: 12px;
     border: none;
     border-radius: var(--border-radius);
     background-color: var(--accent-color);
-    color: white; /* Adjusted for better contrast */
+    color: white;
+    font-size: 0.95em;
+    font-weight: 600;
     cursor: pointer;
-    font-size: 0.9em;
     transition: background-color var(--transition-speed);
 }
 
-.login-button:hover {
+.submit-button:hover {
     background-color: var(--hover-accent-color);
+    transform: translateY(-2px);
 }
 
 /* Error message styling */
@@ -86,26 +94,32 @@
     color: var(--error-color);
     margin-bottom: 15px;
     text-align: center;
-    font-size: 0.85em;
+    font-size: 0.9em;
 }
 
-/* Registration link styling */
-.register-link {
+.register-prompt {
     font-size: 0.85em;
     text-align: center;
-    display: block; /* Makes it a block for better alignment */
-    margin-top: 10px;
+    margin-top: 15px;
+    color: var(--text-color); /* or any color you wish */
+}
+
+/* Link within the registration prompt */
+.register-link {
     color: var(--accent-color);
+    text-decoration: none; /* Remove underline from links */
+    font-weight: bold; /* Optional: Makes 'Join now' stand out */
     transition: color var(--transition-speed);
 }
 
 .register-link:hover {
-    color: var(--hover-accent-color);
+    text-decoration: underline; /* Only underline on hover */
 }
+
 
 /* Responsive adjustments */
 @media screen and (max-width: 600px) {
     .login-form {
-        width: 90%; /* Adjust width for smaller screens */
+        width: 85%;
     }
 }

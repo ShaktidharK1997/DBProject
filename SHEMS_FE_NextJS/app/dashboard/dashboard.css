@@ -53,8 +53,8 @@ a:hover, a:focus {
 .dashboard-info {
   display: flex;
   flex-direction: column;
-  align-items: start;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
   flex-basis: 48%;
   background-color: var(--secondary-bg-color);
   border-radius: var(--border-radius);
@@ -63,6 +63,20 @@ a:hover, a:focus {
   margin-bottom: 20px;
   transition: transform var(--transition-speed), box-shadow var(--transition-speed);
 }
+
+.analyze-button {
+  align-self: center; /* Aligns the button vertically */
+  margin-left: auto;
+  margin-right: auto; /* Both margins to auto will center the button horizontally */
+}
+
+.createsl-button {
+  align-self: center; /* Aligns the button vertically */
+  margin-left: auto;
+  margin-right: auto; /* Both margins to auto will center the button horizontally */
+}
+
+
 
 .dashboard-info:hover {
   transform: translateY(-5px);
