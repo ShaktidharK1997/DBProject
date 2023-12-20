@@ -47,6 +47,7 @@ a:hover, a:focus {
 button {
   padding: 8px 16px;
   border: none;
+  margin-left: 10px;
   border-radius: var(--border-radius);
   background-color: var(--button-bg-color);
   color: #fff;

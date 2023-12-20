@@ -48,13 +48,21 @@ class ServiceLocationViewSet(viewsets.ModelViewSet):
     serializer_class = ServiceLocationSerializer
     
     def get_queryset(self):
-        queryset = CustomerServiceLocation.objects.all()
+        queryset = ServiceLocation.objects.all()
         userid = self.request.query_params.get('userid')
+
+        servicelocationid = self.request.query_params.get('servicelocationid')
+
         if userid is not None:
             customer_service_locations = CustomerServiceLocation.objects.filter(userid__userid=userid)
             service_location_ids = customer_service_locations.values_list('servicelocationid', flat=True)
             queryset = ServiceLocation.objects.filter(servicelocationid__in=service_location_ids)
             return queryset
+        
+        if servicelocationid is not None:
+            queryset = queryset.filter(servicelocationid=servicelocationid)
+            return queryset
+
         else:
             # If no userid is provided, return an empty queryset or handle as needed
             return ServiceLocation.objects.none()
@@ -70,6 +78,26 @@ class CustomerServiceLocationViewSet(viewsets.ModelViewSet):
 class DeviceManagerViewSet(viewsets.ModelViewSet):
     queryset = DeviceManager.objects.all()
     serializer_class = DeviceManagerSerializer
+    def get_queryset(self):
+        servicelocationid = self.request.query_params.get('servicelocationid')
+        deviceid = self.request.query_params.get('deviceid')
+
+        if servicelocationid is not None:
+            devices = ServiceLocationDeviceMapping.objects.filter(servicelocationid = servicelocationid)
+            device_ids = devices.values_list('deviceid', flat=True)
+            queryset = DeviceManager.objects.filter(deviceid__in = device_ids)
+            return queryset
+        
+        if deviceid is not None:
+            queryset = DeviceManager.objects.filter(deviceid = deviceid)
+            return queryset
+    
+        else:
+            # If no userid is provided, return an empty queryset or handle as needed
+            return ServiceLocation.objects.none()
+        
+
+        
 
 class DataHistoryViewSet(viewsets.ModelViewSet):
     queryset = DataHistory.objects.all()

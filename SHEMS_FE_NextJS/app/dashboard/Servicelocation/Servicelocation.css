@@ -1,0 +1,105 @@
+/* Servicelocation.css */
+
+/* Basic reset to standardize styles across browsers */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Basic styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+.sl-container {
+    display : flex;
+    flex-wrap : wrap;
+    gap : 60px;
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+.sl-info{
+    padding: 20px; /* Increase padding */
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+}
+
+.sl-info p {
+    margin-bottom: 15px; /* Increase space between paragraphs */
+}
+
+.device-info {
+    margin-bottom: 20px;
+    padding: 20px;
+    border-bottom: 2px solid #eee;
+}
+
+.sl-info h2, .device-info h2 {
+    margin-bottom: 10px;
+    color: #0056b3;
+}
+
+p {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.edit-servicelocation button {
+    background-color: #327dc3;
+    color: white;
+    border: none;
+    padding: 6px 12px; /* Reduced padding */
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px; /* Reduced font size */
+}
+
+
+.edit-servicelocation button:hover {
+    background-color: #212db6;
+}
+
+.device-info p {
+    background-color: #e7e7e7;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .popup-close-btn {
+    margin-top: 10px;
+  }
+  
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+    .sl-container {
+        width: 95%;
+    }
+}

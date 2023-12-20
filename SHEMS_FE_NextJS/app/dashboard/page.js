@@ -45,32 +45,35 @@ const Dashboard = () => {
     router.push(`/dashboard/Profile?userid=${search}`); // Navigate to the Profile page
   };
 
+  const navigateToServiceLocation = (servicelocationid) => {
+    router.push(`/dashboard/Servicelocation?servicelocationid=${servicelocationid}`); 
+  }
   return (
     <div className = 'dashboard-container'>
       <div className = 'dashboard-info'>
         <h2>My Profile</h2>
         <img src={customerData.profile_photo}/>
         <p className="edit-profile">
-          Edit Profile? <button onClick={handleEditProfile}>Click here</button>
+          <button onClick={handleEditProfile}>Update Profile</button>
         </p>
         <p>First Name: {customerData.firstname}</p>
         <p>Last Name: {customerData.lastname}</p>
         <p>Business Address Line 1: {customerData.baline1}</p>
         <p>Business Address Line 2: {customerData.baline2}</p>
         <p>Phone Number: {customerData.phonenumber}</p>
-        <p>Alternate Email: {customerData.email}</p>
+        {/* <p>Alternate Email: {customerData.email}</p> */}
       </div>
       <div className = 'dashboard-info'>
-      <h2>Service Locations</h2>
+      <h2>My Service Locations</h2>
       {slData && slData.map((item, index) => (
         <div key={index}>
           <p>
-          Service Location ID: 
-          <Link href={`/servicelocations/${item.servicelocationid}`}>
-            {item.servicelocationid}
-          </Link>
+          Service Location: 
+          <span onClick={() => navigateToServiceLocation(item.servicelocationid)} style={{ cursor: 'pointer' }}>
+        {item.servicelocationid}
+        </span>
           </p>
-          <p>Active: {item.active ? 'Yes' : 'No'}</p>
+          {/* <p>Active: {item.active ? 'Yes' : 'No'}</p> */}
         </div>
       ))}
     </div>
