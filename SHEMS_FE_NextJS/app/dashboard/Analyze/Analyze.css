@@ -1,9 +1,19 @@
 /* Analyze.module.css or Analyze.css */
 
+.graphs-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
 
+.graph-container {
+    width: calc(50% - 20px); /* Adjust width to fit two graphs per row, accounting for margin */
+    margin: 10px; /* Adjust margin as needed */
+    height: 400px; /* Fixed height or adjust as needed */
+    margin-bottom: 80px; /* Increase bottom margin to push down following graphs */
+}
 
-
-/* Responsive design */
+/* Responsive design for smaller screens */
 @media screen and (max-width: 768px) {
     .graphs-container {
         flex-direction: column;
@@ -11,6 +21,7 @@
     }
 
     .graph-container {
-        max-width: 100%;
+        width: 100%; /* Full width for small screens */
+        margin: 20px 0; /* Increased margin for top and bottom */
     }
 }

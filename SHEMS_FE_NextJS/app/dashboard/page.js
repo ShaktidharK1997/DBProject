@@ -4,6 +4,9 @@ import './dashboard.css';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
+import AddServiceLocation from './servicelocationform'; 
+import Popup from './popup';
+
 
 const Dashboard = () => {
   const [customerData, setCustomerData] = useState(null);
@@ -54,6 +57,51 @@ const Dashboard = () => {
   const navigateToServiceLocation = (servicelocationid) => {
     router.push(`/dashboard/Servicelocation?servicelocationid=${servicelocationid}`); 
   }
+
+  const handleCreateSLPopup = () => {
+    setShowCreateLocationPopup(true);
+  };
+
+    const handleCreateServiceLocationSubmit = async (newServiceLocationData) => {
+      try {
+          const response = await fetch('http://localhost:8000/SHEMS_v1/servicelocations/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(newServiceLocationData),
+          });
+  
+          if (!response.ok) throw new Error('Failed to create service location');
+
+          const createdLocation = await response.json(); 
+
+          const customerServiceLocationData = {
+            userid: customerData.userid, // assuming customerData contains the userid
+            servicelocationid: createdLocation.servicelocationid, // replace 'id' with the actual ID field from your response
+            active: true,
+          };
+          console.log(customerServiceLocationData);
+          const response2 = await fetch('http://localhost:8000/SHEMS_v1/customerservicelocations/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(customerServiceLocationData),
+          });
+
+          if (!response2.ok) throw new Error('Failed to link service location with user');
+
+          const createdLocationmapping = await response.json(); 
+
+          // Handle success - maybe close the popup and refresh the service locations list
+          setShowCreateLocationPopup(false);
+          // Fetch service locations again to update the list
+          // ... (fetch and update service location data)
+      } catch (error) {
+          console.error('Error creating service location:', error);
+          // Handle error - show message to the user
+      }
+    };
+  
   return (
     <div className = 'dashboard-container'>
       <div className = 'dashboard-info'>
@@ -71,7 +119,7 @@ const Dashboard = () => {
       </div>
       <div className = 'dashboard-info'>
       <h2>My Service Locations</h2>
-      <button className="createsl-button" onClick={() => setShowCreateLocationPopup(true)} style={{ marginLeft: 'auto' }}>
+      <button className="createsl-button" onClick={handleCreateSLPopup} style={{ marginLeft: 'auto' }}>
       Add Service Location
       </button>
       {slData && slData.map((item, index) => (
@@ -86,6 +134,14 @@ const Dashboard = () => {
         </div>
       ))}
     </div>
+    {showCreateLocationPopup && (
+  <Popup onClose={() => setShowCreateLocationPopup(false)}>
+    <AddServiceLocation 
+      onSubmit={handleCreateServiceLocationSubmit} 
+      onClose={() => setShowCreateLocationPopup(false)} 
+    />
+  </Popup>
+)}
     </div>
     
   );

@@ -17,7 +17,6 @@ export default function RootLayout({ children }) {
         <main className="content-wrap">  
           {children}
         </main>
-        <Footer />
       </div>
       </body>
     </html>

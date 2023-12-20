@@ -11,7 +11,7 @@ from rest_framework.routers import DefaultRouter
 from .views import (CustomerViewSet, ServiceLocationViewSet, 
                     CustomerServiceLocationViewSet, DeviceManagerViewSet, 
                     DataHistoryViewSet, EnergyPricesViewSet, 
-                    ServiceLocationDeviceMappingViewSet, LoginView, RegisterView, EnergyUsageView,DeviceTypeEnergyUsageView)
+                    ServiceLocationDeviceMappingViewSet, LoginView, RegisterView, EnergyUsageView,DeviceTypeEnergyUsageView,EnergyPricesByZipcodeView,EnergyUsageOverTimeView)
 
 router = DefaultRouter()
 router.register(r'customers', CustomerViewSet)
@@ -28,4 +28,7 @@ urlpatterns = [
     path('register/',RegisterView.as_view(), name='register'),
     path('energy-usage/', EnergyUsageView.as_view(), name='energy-usage'),
     path('device-energy-usage/', DeviceTypeEnergyUsageView.as_view(), name='device-energy-usage'),
+    path('energy-usage-over-time/', views.EnergyUsageOverTimeView.as_view(), name='energy_usage_over_time'),
+    path('energy-prices-by-zipcode/', views.EnergyPricesByZipcodeView.as_view(), name='energy_prices_by_zipcode'),
+
 ]

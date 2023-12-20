@@ -33,6 +33,7 @@ from .models import ServiceLocation, DataHistory, ServiceLocationDeviceMapping, 
 from .serializers import ServiceLocationEnergyUsageSerializer
 from django.db.models import Sum
 from django.db import models
+from django.db.models.functions import TruncDay
 
     
 
@@ -275,6 +276,62 @@ class RegisterView(APIView):
             'refresh': str(refresh),
             'access': str(refresh.access_token),
         })
+    
+from django.db.models import Sum
+from django.http import JsonResponse
+from .models import DataHistory
+import datetime
+
+
+
+class EnergyUsageOverTimeView(APIView):
+    def get(self, request, *args, **kwargs):
+        userid = request.query_params.get('userid')
+
+        if not userid:
+            return Response({'error': 'User ID is required'}, status=400)
+
+        try:
+            userid = int(userid)
+        except ValueError:
+            return Response({'error': 'Invalid User ID'}, status=400)
+
+        # Get service locations for the user
+        service_locations = CustomerServiceLocation.objects.filter(
+            userid=userid
+        ).values_list('servicelocationid', flat=True)
+
+        # Get active devices from these service locations
+        devices = ServiceLocationDeviceMapping.objects.filter(
+            servicelocationid__in=service_locations,
+            active=True
+        ).values_list('deviceid', flat=True)
+
+        # Now, use these device IDs to filter DataHistory
+        energy_usage = DataHistory.objects.filter(
+            deviceid__in=devices
+        ).annotate(date=TruncDay('timestamp')) \
+        .values('date') \
+        .annotate(total_energy=Sum('event_value')) \
+        .order_by('date')
+
+        energy_usage_data = [{'timestamp': entry['date'], 'total_energy': entry['total_energy']} for entry in energy_usage]
+
+        return Response({'energy_over_time': energy_usage_data})
+                         
+from .models import EnergyPrices
+from django.db.models import Avg
+
+    
+class EnergyPricesByZipcodeView(APIView):
+    def get(self, request, *args, **kwargs):
+        # Make sure the 'price' field in EnergyPrices is a numeric type (like DecimalField or FloatField)
+        price_data = EnergyPrices.objects.values('zipcode').annotate(average_price=Avg('price'))
+        prices_by_zipcode = [{'zipcode': entry['zipcode'], 'average_price': entry['average_price']} for entry in price_data]
+
+        return Response({'prices_by_zipcode': prices_by_zipcode})
+        
+
 
 
 

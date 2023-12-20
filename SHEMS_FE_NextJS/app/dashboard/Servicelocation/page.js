@@ -5,10 +5,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Popup from './Popup';
 import UpdateDeviceForm from './deviceform'; // Adjust the path and name as needed
+import AddDeviceForm from './adddeviceform'; // Import AddDeviceForm
+import EditServiceLocationForm from './EditServiceLocationForm';
+
 
 
 import React, { useState, useEffect } from 'react';
-
+import { useRouter } from 'next/navigation'
 
 const Servicelocation = () =>{
     const [sldata, setsldata] = useState(null);
@@ -17,12 +20,66 @@ const Servicelocation = () =>{
     const search = SearchParams.get('servicelocationid');
     const [showPopup, setShowPopup] = useState(false);
     const [popupContent, setPopupContent] = useState('');
-    
+    const router = useRouter();
 
     const handleAddDevice = () => {
-        setPopupContent(<p>Add Device Form Here</p>);
+        setPopupContent(
+            <AddDeviceForm 
+                onClose={handleClosePopup} 
+                onSubmit={handleAddDeviceSubmit}
+            />
+        );
         setShowPopup(true);
     };
+
+
+    const handleAddDeviceSubmit = async (newDeviceData) => {
+        // Step 1: Add new device
+        const deviceResponse = await fetch('http://localhost:8000/SHEMS_v1/devicemanagers/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newDeviceData),
+        });
+    
+        if (deviceResponse.ok) {
+            // Assuming the response includes the added device's data
+            const addedDevice = await deviceResponse.json();
+    
+            // Step 2: Map the new device to the service location
+            const mappingData = {
+                servicelocationid: search, // assuming 'search' contains the service location ID
+                deviceid: addedDevice.deviceid, // or however you get the new device's ID
+                active: true // or set based on your business logic
+            };
+    
+            const mappingResponse = await fetch('http://localhost:8000/SHEMS_v1/servicelocationdevicemappings/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(mappingData),
+            });
+    
+            if (mappingResponse.ok) {
+                // Fetch updated device data or update state
+                const updatedDevicesResponse = await fetch('http://localhost:8000/SHEMS_v1/devicemanagers/');
+                if (updatedDevicesResponse.ok) {
+                    const updatedDevices = await updatedDevicesResponse.json();
+                    setdevicedata(updatedDevices);
+                } else {
+                    console.error('Failed to refresh device list');
+                }
+                handleClosePopup(); // Close the popup
+            } else {
+                console.error('Failed to map new device to service location');
+            }
+        } else {
+            console.error('Failed to add new device');
+        }
+    };
+
 
     const handleUpdateDevice = (deviceid) => {
         setPopupContent(
@@ -90,8 +147,31 @@ const Servicelocation = () =>{
       }
     
       const handleEditServiceLocation = () => {
-        router.push(`/dashboard/Profile?userid=${search}`); // Navigate to the Profile page
-      };
+        setPopupContent(
+            <EditServiceLocationForm 
+                serviceLocationData={sldata} 
+                onClose={handleClosePopup} 
+                onSubmit={handleEditServiceLocationSubmit}
+            />
+        );
+        setShowPopup(true);
+    };
+
+    const handleEditServiceLocationSubmit = async (updatedData) => {
+        const servicelocationid = updatedData.servicelocationid.toString();
+        const response = await fetch(`http://localhost:8000/SHEMS_v1/servicelocations/${updatedData.servicelocationid}/`, {
+            method: 'PUT',
+            body: updatedData,
+        });
+    
+        if (response.ok) {
+            const updatedServiceLocation = await response.json();
+            setsldata(updatedServiceLocation);
+            handleClosePopup();
+        } else {
+            console.error('Failed to update service location');
+        }
+    };
 
     
 
